@@ -1,3 +1,4 @@
 keys.txt
 *.jpg
 *.png
+__pycache__
