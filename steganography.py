@@ -15,12 +15,12 @@ parser.add_argument('-i', '--imgPath', default=inputImgPath )
 
 
 args = parser.parse_args()
-print(args)
 if args.decrypt:
     res = decrypt(args.imgPath)
-    print(res)
+    print("Раcшифрована информация с файла",  res, "в", args.imgPath)
 elif args.encrypt:
     encrypt(args.imgPath, secretInfo, outputImgPath)
+    print("Зашифрована информация", secretInfo, "в", outputImgPath)
 else:
     print("Пу")
 

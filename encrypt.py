@@ -2,46 +2,48 @@ from PIL import Image, ImageDraw
 from random import randint		
 import os
 
+def changeFilename(imgPath, innerString, extension=".png"):
+	#imgPath.split(".")[-1]
+	return os.path.splitext(imgPath)[0] + innerString + extension
+
+
+def putPixels(image, elem):
+	draw = ImageDraw.Draw(image)	   		
+	pix = image.load()
+
+	width = image.size[0]  		   	
+	height = image.size[1]
+
+	points = (randint(1,width-10),randint(1,height-10))		
+	g, b = pix[points][1:3]
+	ascii = ord(elem)
+	draw.point(points, (ascii,g , b))	
+	return points
+
 
 def getPattern(imgPath: str, secretInfo: str, outputPath: str, imageSize):
-	import numpy as np
 	img = Image.new("RGB", imageSize, "black")
 
-	draw = ImageDraw.Draw(img)	   		
-	width = imageSize[0]  		   	
-	height = imageSize[1]
-	pix = img.load()
-	with open('keys.txt','w') as f:
-		for elem in secretInfo:
-			points = (randint(1,width-10),randint(1,height-10))		
-			g, b = pix[points][1:3]
-			ascii = ord(elem)
-			draw.point(points, (ascii,g , b))														
-			f.write(str(points)+'\n')			
-		f.close()
+	for elem in secretInfo:
+		putPixels(img, elem)							
 
+	outputPath = changeFilename(outputPath, "Pattern")
 	img.save(outputPath)
 												
 
 def encrypt(imgPath: str, secretInfo: str, outputPath: str):	
 	img = Image.open(imgPath)
-	draw = ImageDraw.Draw(img)	   		
-	width = img.size[0]  		   	
-	height = img.size[1]
-	pix = img.load()
+
 	with open('keys.txt','w') as f:
 		for elem in secretInfo:
-			points = (randint(1,width-10),randint(1,height-10))		
-			g, b = pix[points][1:3]
-			ascii = ord(elem)
-			draw.point(points, (ascii,g , b))														
+			points = putPixels(img, elem)														
 			f.write(str(points)+'\n')			
 		f.close()
 
 
 	if not outputPath:
-		outputPath = os.path.splitext(imgPath)[0] + "coded" + ".png" #imgPath.split(".")[-1]
+		outputPath = changeFilename(imgPath, "coded")
 	img.save(outputPath, "PNG")
-	getPattern(imgPath, secretInfo, outputPath, (width, height))
+	getPattern(imgPath, secretInfo, outputPath, img.size)
 
 
