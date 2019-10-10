@@ -8,13 +8,7 @@ def changeFilename(imgPath, innerString, extension=".png"):
 
 
 def putPixels(image, elem):
-	# def setPixel(width, height, pix, draw, elem): # слишком просто
-	# 	points = (randint(1,width-10),randint(1,height-10))		
-	# 	g, b = pix[points][1:3]
-	# 	ascii = ord(elem)
-	# 	draw.point(points, (ascii, g, b))	
-	# 	return points
-	
+
 	draw = ImageDraw.Draw(image)	   		
 	pix = image.load()
 
@@ -23,7 +17,7 @@ def putPixels(image, elem):
 	
 	currentChar = 0
 	currentBit = 0
-	
+	count = 0
 	for x in range(width):
 		for y in range(height):
 			r,g,b = pix[(x,y)]
@@ -41,18 +35,7 @@ def putPixels(image, elem):
 				else:
 					currentBit+=1
 
-
-
-def getPattern(imgPath: str, secretInfo: str, outputPath: str, imageSize):
-	img = Image.new("RGB", imageSize, "black")
-
-	for elem in secretInfo:
-		putPixels(img, elem)							
-
-	outputPath = changeFilename(outputPath, "Pattern")
-	img.save(outputPath)
-	img.show()
-												
+							
 
 def encrypt(imgPath: str, secretInfo: str, outputPath: str):	
 	img = Image.open(imgPath)
@@ -63,6 +46,5 @@ def encrypt(imgPath: str, secretInfo: str, outputPath: str):
 		outputPath = changeFilename(imgPath, "coded")
 	img.save(outputPath, "PNG")
 	img.show()
-	getPattern(imgPath, secretInfo, outputPath, img.size)
 
 
