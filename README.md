@@ -8,4 +8,5 @@
 
 Кастомное изображение для любой из опций(d/e)
 
-    python steganography.py -di "./image.jpg"
+    python steganography.py -ei image.jpg
+    python steganography.py -di newimage.png
