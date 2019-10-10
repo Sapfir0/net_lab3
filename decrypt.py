@@ -2,7 +2,7 @@ from PIL import Image
 from re import findall
 import os
 
-def decrypt(imgPath):
+def decrypt(imgPath, length):
 	a = []						    
 	image = Image.open(imgPath)		
 	pix = image.load()
@@ -12,9 +12,12 @@ def decrypt(imgPath):
 
 	curChar = 0
 	curBit = 0
-
+	count = 0
 	for x in range(width):
 		for y in range(height):
+			count +=1
+			if count >= length*8:
+				break	
 			r,g,b = pix[(x,y)]
 			curChar |= (r&1)<<curBit
 			if (curBit==7):
