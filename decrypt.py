@@ -4,17 +4,26 @@ import os
 
 def decrypt(imgPath):
 	a = []						    
-	keys = []
-	img = Image.open(imgPath)		
-	pix = img.load()
-	with open(os.path.join(os.path.curdir, 'keys.txt'),'r') as f:
-		y = str([line.strip() for line in f])				
+	image = Image.open(imgPath)		
+	pix = image.load()
 
-		for i in range(len(findall(r'\((\d+)\,',y))):
-			points = (int(findall(r'\((\d+)\,',y)[i]),int(findall(r'\,\s(\d+)\)',y)[i])) # x,y
-			keys.append(points) 	
-		for key in keys:
-			a.append(pix[tuple(key)][0])							
+	width = image.size[0]  		   	
+	height = image.size[1]
+
+	curChar = 0
+	curBit = 0
+
+	for x in range(width):
+		for y in range(height):
+			r,g,b = pix[(x,y)]
+			curChar |= (r&1)<<curBit
+			if (curBit==7):
+				curBit = 0
+				a.append(curChar)
+				curChar = 0
+			else:
+				curBit+=1			
+				
 		
 	return ''.join([chr(elem) for elem in a])	
 
