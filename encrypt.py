@@ -34,12 +34,12 @@ def putPixels(image, elem):
 				bitToCode = code&(1<<currentBit)
 				lsb = bitToCode>>currentBit
 				r |= lsb
-			draw.point((x,y), (r,g,b))
-			if (currentBit==7):
-				currentBit = 0
-				currentChar+=1
-			else:
-				currentBit+=1
+				draw.point((x,y), (r,g,b))
+				if (currentBit==7):
+					currentBit = 0
+					currentChar+=1
+				else:
+					currentBit+=1
 
 
 
