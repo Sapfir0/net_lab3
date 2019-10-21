@@ -7,8 +7,10 @@ def changeFilename(imgPath, innerString, extension=".png"):
 	return os.path.splitext(imgPath)[0] + innerString + extension
 
 
-def putPixels(image, elem):
-
+def putPixelsByOneBit(image, elem):
+	"""
+	в один пиксель один значащий бит
+	"""
 	draw = ImageDraw.Draw(image)	   		
 	pix = image.load()
 
@@ -35,12 +37,88 @@ def putPixels(image, elem):
 				else:
 					currentBit+=1
 
+def putPixelsByThreeBit(image, elem):
+	"""
+	в один пиксель три значащих бита
+	"""
+	draw = ImageDraw.Draw(image)	   		
+	pix = image.load()
+
+	width = image.size[0]  		   	
+	height = image.size[1]
+	
+	def lsb(currentlyCodedElem, currentBit, to_byte = ord):
+		code = to_byte(currentlyCodedElem)
+		bitToCode = code&(1<<currentBit)
+		return bitToCode>>currentBit
+	
+	currentChar = 0
+	currentBit = 0
+	count = 0
+	for x in range(width):
+		for y in range(height):
+			if (currentChar>=len(elem)):
+				continue
+
+			r,g,b = pix[(x,y)]
+			
+			r = r&254
+			r |= lsb(elem[currentChar], currentBit)
+			if (currentBit==7):
+				currentBit = 0
+				currentChar+=1
+			else:
+				currentBit+=1
+
+			g = g&254
+			g |= lsb(elem[currentChar], currentBit)
+			if (currentBit==7):
+				currentBit = 0
+				currentChar+=1
+			else:
+				currentBit+=1
+			
+			b = b&254
+			b |= lsb(elem[currentChar], currentBit)
+			if (currentBit==7):
+				currentBit = 0
+				currentChar+=1
+			else:
+				currentBit+=1
+			
+			draw.point((x,y), (r,g,b))
+
+
+def putPixelsByOneByte(image, elem):
+	"""
+	в один пиксель один значащий байт
+	"""
+	draw = ImageDraw.Draw(image)	   		
+	pix = image.load()
+
+	width = image.size[0]  		   	
+	height = image.size[1]
+	
+	currentChar = 0
+	count = 0
+	for x in range(width):
+		for y in range(height):
+			r,g,b = pix[(x,y)]
+			if (currentChar<len(elem)):
+				currentlyCodedElem = elem[currentChar]
+				code = ord(currentlyCodedElem)
+				threeBits = 0b11111000
+				twoBits = 0b11111100
+				r = (r & threeBits) | (code & ~threeBits)
+				g = (g & threeBits) | (code>>3 & ~threeBits)
+				b = (b & twoBits)   | (code>>6 & ~twoBits)
+				draw.point((x,y), (r,g,b))
 							
 
 def encrypt(imgPath: str, secretInfo: str, outputPath: str):	
 	img = Image.open(imgPath)
 	img.show()
-	putPixels(img, secretInfo)
+	putPixelsByOneBit(img, secretInfo)
 
 	if not outputPath:
 		outputPath = changeFilename(imgPath, "coded")
