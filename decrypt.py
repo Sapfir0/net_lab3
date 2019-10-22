@@ -8,17 +8,17 @@ def takeFromPixelByOneBit(pixels, length: int):
 	curBit = 0
 	count = 0
 	for pixel in pixels:
-			count +=1
-			if count >= length*8:
-				break	
-			r,g,b = pixel
-			curChar |= (r&1)<<curBit
-			if (curBit==7):
-				curBit = 0
-				byte_arr.append(curChar)
-				curChar = 0
-			else:
-				curBit+=1	
+		count +=1
+		if count >= length*8:
+			break	
+		r,g,b = pixel
+		curChar |= (r&1)<<curBit
+		if (curBit==7):
+			curBit = 0
+			byte_arr.append(curChar)
+			curChar = 0
+		else:
+			curBit+=1	
 
 	return byte_arr
 

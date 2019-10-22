@@ -119,10 +119,10 @@ def encrypt(imgPath: str, secretInfo: str, outputPath: str):
 	x, y = 0, 0
 	for i in range(len(output)):
 		draw.point((x,y), output[i]) # магия
-		x += 1
-		if x >= width:
-			x = 0
-			y += 1
+		y += 1
+		if y >= height:
+			y = 0
+			x += 1
 			# здесь должна быть проверка на выход за границы дозволенного, но мне влом
 
 	if not outputPath:
