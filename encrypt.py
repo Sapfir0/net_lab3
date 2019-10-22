@@ -62,14 +62,15 @@ def putPixelsByThreeBit(data, elem):
 		r = r&254
 		r |= lsb(elem[currentChar], currentBit)
 		nextChar()
+		if (currentChar<len(elem)):
+			g = g&254
+			g |= lsb(elem[currentChar], currentBit)
+			nextChar()
 
-		g = g&254
-		g |= lsb(elem[currentChar], currentBit)
-		nextChar()
-		
-		b = b&254
-		b |= lsb(elem[currentChar], currentBit)
-		nextChar()
+		if (currentChar<len(elem)):
+			b = b&254
+			b |= lsb(elem[currentChar], currentBit)
+			nextChar()
 
 		pixel_arr.append((r,g,b))
 	return pixel_arr
