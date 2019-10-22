@@ -10,3 +10,6 @@
 
     python steganography.py -ei image.jpg
     python steganography.py -di newimage.png
+
+
+Use `-m 1b`, `-m 3b`, `-m 1B` for custom mode
