@@ -75,7 +75,7 @@ def takeFromPixelByOneByte(pixels, length:int):
 
 	return byte_arr
 
-def decrypt(imgPath, length, mode=0):
+def decrypt(imgPath, length, mode="1b"):
 	a = []						    
 	image = Image.open(imgPath)		
 	pixs = image.load()
