@@ -28,6 +28,8 @@ def putPixelsByOneBit(data, elem):
 			currentBit+=1
 		pixel_arr.append((r,g,b))
 
+	return pixel_arr
+
 def putPixelsByThreeBit(data, elem):
 	"""
 	в один пиксель три значащих бита
@@ -70,6 +72,7 @@ def putPixelsByThreeBit(data, elem):
 		nextChar()
 
 		pixel_arr.append((r,g,b))
+	return pixel_arr
 
 
 def putPixelsByOneByte(data, elem):
@@ -91,6 +94,8 @@ def putPixelsByOneByte(data, elem):
 		g = (g & threeBits) | (code>>3 & ~threeBits)
 		b = (b & twoBits)   | (code>>6 & ~twoBits)
 		pixel_arr.append((r,g,b))
+
+	return pixel_arr
 		
 def changeFilename(imgPath, innerString, extension=".png"):
 	#imgPath.split(".")[-1]
