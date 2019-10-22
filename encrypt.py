@@ -102,7 +102,7 @@ def changeFilename(imgPath, innerString, extension=".png"):
 	#imgPath.split(".")[-1]
 	return os.path.splitext(imgPath)[0] + innerString + extension							
 
-def encrypt(imgPath: str, secretInfo: str, outputPath: str):	
+def encrypt(imgPath: str, secretInfo: str, outputPath: str, mode="1b"):	
 	img = Image.open(imgPath)
 	img.show()
 
@@ -115,7 +115,12 @@ def encrypt(imgPath: str, secretInfo: str, outputPath: str):
 	# кидаем данные в одномерный массив
 	input_data = [pixs[(x,y)] for x in range(width) for y in range(height)]
 	
-	output = putPixelsByOneByte(input_data, secretInfo)
+	if mode == "1b":
+		output = putPixelsByOneBit(input_data, secretInfo)
+	elif mode == "1B":
+		output = putPixelsByOneByte(input_data, secretInfo)
+	else:
+		output = putPixelsByThreeBit(input_data, secretInfo)
 
 	x, y = 0, 0
 	for i in range(len(output)):

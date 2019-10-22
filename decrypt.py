@@ -75,7 +75,7 @@ def takeFromPixelByOneByte(pixels, length:int):
 
 	return byte_arr
 
-def decrypt(imgPath, length):
+def decrypt(imgPath, length, mode="1b"):
 	a = []						    
 	image = Image.open(imgPath)		
 	pixs = image.load()
@@ -85,8 +85,13 @@ def decrypt(imgPath, length):
 	# кидаем данные в одномерный массив
 	input_data = [pixs[(x,y)] for x in range(width) for y in range(height)]
 
-	a = takeFromPixelByOneByte(input_data, length)			
-	
+	if mode == "1b":
+		a = takeFromPixelByOneBit(input_data, length)			
+	elif mode == "1B":
+		a = takeFromPixelByOneByte(input_data, length)	
+	else:
+		a = takeFromPixelByThreeBit(input_data, length)	
+		
 	return ''.join([chr(elem) for elem in a])	
 
 
