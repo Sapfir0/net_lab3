@@ -93,6 +93,7 @@ def putPixelsByOneByte(data, elem):
 		r = (r & threeBits) | (code & ~threeBits)
 		g = (g & threeBits) | (code>>3 & ~threeBits)
 		b = (b & twoBits)   | (code>>6 & ~twoBits)
+		currentChar += 1
 		pixel_arr.append((r,g,b))
 
 	return pixel_arr
@@ -114,7 +115,7 @@ def encrypt(imgPath: str, secretInfo: str, outputPath: str):
 	# кидаем данные в одномерный массив
 	input_data = [pixs[(x,y)] for x in range(width) for y in range(height)]
 	
-	output = putPixelsByOneBit(input_data, secretInfo)
+	output = putPixelsByOneByte(input_data, secretInfo)
 
 	x, y = 0, 0
 	for i in range(len(output)):

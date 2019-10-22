@@ -68,9 +68,9 @@ def takeFromPixelByOneByte(pixels, length:int):
 			break	
 		r,g,b = pixel
 		cur_byte = 0
-		cur_byte |= r & 0x03
-		cur_byte |= (g & 0x03) << 3
-		cur_byte |= (b & 0x02) << 6
+		cur_byte |= r & 0x07
+		cur_byte |= (g & 0x07) << 3
+		cur_byte |= (b & 0x03) << 6
 		byte_arr.append(cur_byte) 	
 
 	return byte_arr
@@ -85,8 +85,8 @@ def decrypt(imgPath, length):
 	# кидаем данные в одномерный массив
 	input_data = [pixs[(x,y)] for x in range(width) for y in range(height)]
 
-	a = takeFromPixelByOneBit(input_data, length)			
-		
+	a = takeFromPixelByOneByte(input_data, length)			
+	
 	return ''.join([chr(elem) for elem in a])	
 
 
