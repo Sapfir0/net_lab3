@@ -11,13 +11,14 @@ def putPixelsByOneBit(data, elem):
     currentChar = 0
     currentBit = 0
     count = 0
-    for pix in data:
-        if not (currentChar < len(elem)):
-            break
+    elemWithLength = f"{len(elem)} {elem}"
 
+    for pix in data:
+        if not (currentChar < len(elemWithLength)):
+            break
         r, g, b = pix
         r = r & 254
-        currentlyCodedElem = elem[currentChar]
+        currentlyCodedElem = elemWithLength[currentChar]
         code = ord(currentlyCodedElem)
         bitToCode = code & (1 << currentBit)
         lsb = bitToCode >> currentBit
@@ -109,7 +110,7 @@ def changeFilename(imgPath, innerString, extension=".png"):
 
 def encrypt(imgPath: str, secretInfo: str, outputPath: str, mode="1b"):
     img = Image.open(imgPath)
-    img.show()
+    #img.show()
 
     draw = ImageDraw.Draw(img)
     pixs = img.load()
@@ -140,4 +141,4 @@ def encrypt(imgPath: str, secretInfo: str, outputPath: str, mode="1b"):
         outputPath = changeFilename(imgPath, "coded")
 
     img.save(outputPath, "PNG")
-    img.show()
+    #img.show()

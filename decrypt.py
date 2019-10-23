@@ -3,14 +3,39 @@ from re import findall
 import os
 
 
-def takeFromPixelByOneBit(pixels, length: int):
+def takeFromPixelByOneBit(pixels):
     byte_arr = []
     curChar = 0
     curBit = 0
     count = 0
+    messageLengthArr = []
     for pixel in pixels:
+        count += 1 # важная строка, т.к. после этого цикла каунт будет как раз с начала сообщения
+        r, g, b = pixel
+        curChar |= (r & 1) << curBit
+        if (curBit == 7):
+            curBit = 0
+            messageLengthArr.append(curChar)
+            if curChar == ord(" "):
+                break
+            curChar = 0
+        else:
+            curBit += 1
+
+    messageLengthArr = [chr(elem) for elem in messageLengthArr]
+    messageLength = ""
+    for i in messageLengthArr[:-1]:
+        messageLength += i
+
+    messageLength = int(messageLength)
+    lengthIsSkipped = False
+    for pixel in pixels:
+        if count > 0 and not lengthIsSkipped:
+            count-=1
+            continue
+        lengthIsSkipped = True
         count += 1
-        if count >= length * 8:
+        if count >= messageLength * 8 + 1: # почему +1? я не знаю
             break
         r, g, b = pixel
         curChar |= (r & 1) << curBit
@@ -88,7 +113,7 @@ def decrypt(imgPath, length, mode="1b"):
     input_data = [pixs[(x, y)] for x in range(width) for y in range(height)]
 
     if mode == "1b":
-        a = takeFromPixelByOneBit(input_data, length)
+        a = takeFromPixelByOneBit(input_data)
     elif mode == "1B":
         a = takeFromPixelByOneByte(input_data, length)
     else:
