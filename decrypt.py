@@ -2,35 +2,43 @@ from PIL import Image
 from re import findall
 import os
 
+count = 0
 
-def takeFromPixelByOneBit(pixels):
-    byte_arr = []
+def readMessageLength(pixels):
+    global count  # ух как плохо
     curChar = 0
     curBit = 0
-    count = 0
     messageLengthArr = []
     for pixel in pixels:
-        count += 1 # важная строка, т.к. после этого цикла каунт будет как раз с начала сообщения
-        r, g, b = pixel
-        curChar |= (r & 1) << curBit
-        if (curBit == 7):
-            curBit = 0
-            messageLengthArr.append(curChar)
-            if curChar == ord(" "):
-                break
-            curChar = 0
-        else:
-            curBit += 1
+            count += 1 # важная строка, т.к. после этого цикла каунт будет как раз с начала сообщения
+            r, g, b = pixel
+            curChar |= (r & 1) << curBit
+            if (curBit == 7):
+                curBit = 0
+                messageLengthArr.append(curChar)
+                if curChar == ord(" "):
+                    break
+                curChar = 0
+            else:
+                curBit += 1
 
     messageLengthArr = [chr(elem) for elem in messageLengthArr]
     messageLength = ""
     for i in messageLengthArr[:-1]:
         messageLength += i
+    return int(messageLength)
 
-    messageLength = int(messageLength)
+
+def takeFromPixelByOneBit(pixels):
+    byte_arr = []
+    curChar = 0
+    curBit = 0
+    messageLength = readMessageLength(pixels)
+    global count
+
     lengthIsSkipped = False
     for pixel in pixels:
-        if count > 0 and not lengthIsSkipped:
+        if count > 0 and not lengthIsSkipped: # передвигаемся по пикселям, пока не пропустим указанную длину
             count-=1
             continue
         lengthIsSkipped = True

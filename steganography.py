@@ -3,7 +3,7 @@ from encrypt import encrypt
 from decrypt import decrypt
 import os
 
-secretInfo = "Quick brown fox jumps over lazy dogfff."
+secretInfo = "Not quick but flexable brown fox jumps over lazy dog."
 
 inputImgPath = os.path.join(os.path.curdir, "image.jpg")
 outputImgPath = os.path.join(os.path.curdir, "newimage.png")

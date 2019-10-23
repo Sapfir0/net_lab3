@@ -10,7 +10,6 @@ def putPixelsByOneBit(data, elem):
     pixel_arr = []
     currentChar = 0
     currentBit = 0
-    count = 0
     elemWithLength = f"{len(elem)} {elem}"
 
     for pix in data:
