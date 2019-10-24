@@ -31,10 +31,14 @@ if args.decrypt:
     res = decrypt(args.imgPath, length, algorithm)
     print(f"Раcшифрована информация с файла {args.imgPath}:\n{res}")
 elif args.encrypt:
-    encrypt(args.imgPath, args.story, outputImgPath, algorithm)
-    print(f"Зашифрована информация \"{args.story}\" в {outputImgPath}")
-    if args.analize:
-        analize(args.imgPath, outputImgPath)
+    try:
+        encrypt(args.imgPath, args.story, outputImgPath, algorithm)
+    except Exception as err:
+        print('В изображении недостаточно пикселей для шифровки')
+    else:
+        print(f"Зашифрована информация \"{args.story}\" в {outputImgPath}")
+        if args.analize:
+            analize(args.imgPath, outputImgPath)
 else:
     print("Пу")
 
